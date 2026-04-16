@@ -1,0 +1,65 @@
+# Graphiti MCP Server Configuration for AIM
+# LLM: Anthropic Claude, Embedder: OpenAI, Database: Neo4j Aura
+
+server:
+  transport: "http"
+  host: "0.0.0.0"
+  port: 8000
+
+llm:
+  provider: "anthropic"
+  model: ${LLM_MODEL:claude-sonnet-4-20250514}
+  max_tokens: 4096
+
+  providers:
+    anthropic:
+      api_key: ${ANTHROPIC_API_KEY}
+      api_url: ${ANTHROPIC_API_URL:https://api.anthropic.com}
+      max_retries: 3
+
+    openai:
+      api_key: ${OPENAI_API_KEY}
+      api_url: ${OPENAI_API_URL:https://api.openai.com/v1}
+
+embedder:
+  provider: "openai"
+  model: "text-embedding-3-small"
+  dimensions: 1536
+
+  providers:
+    openai:
+      api_key: ${OPENAI_API_KEY}
+      api_url: ${OPENAI_API_URL:https://api.openai.com/v1}
+
+database:
+  provider: "neo4j"
+
+  providers:
+    neo4j:
+      uri: ${NEO4J_URI}
+      username: ${NEO4J_USER:neo4j}
+      password: ${NEO4J_PASSWORD}
+      database: ${NEO4J_DATABASE:neo4j}
+      use_parallel_runtime: false
+
+graphiti:
+  group_id: ${GRAPHITI_GROUP_ID:aim-default}
+  episode_id_prefix: ${EPISODE_ID_PREFIX:}
+  user_id: ${USER_ID:aim_user}
+  entity_types:
+    - name: "Person"
+      description: "Individual people, team members, stakeholders"
+    - name: "System"
+      description: "Software systems, APIs, services, tools, platforms"
+    - name: "Decision"
+      description: "Architectural decisions, policy choices, strategic directions"
+    - name: "Project"
+      description: "Initiatives, workstreams, features being built"
+    - name: "Organization"
+      description: "Companies, teams, departments, groups"
+    - name: "Concept"
+      description: "Technical concepts, patterns, methodologies"
+    - name: "Event"
+      description: "Meetings, incidents, milestones, deadlines"
+    - name: "Requirement"
+      description: "Specific needs, constraints, or specifications"
