@@ -143,10 +143,16 @@ For optimal performance, ensure the database is properly configured and accessib
 API keys are provided for any language model operations.
 """
 
+# Load config early to pass host at construction time (fixes Issue #1205:
+# DNS rebinding protection always enabled due to late host assignment)
+_init_config = GraphitiConfig()
+
 # MCP server instance
 mcp = FastMCP(
     'Graphiti Agent Memory',
     instructions=GRAPHITI_MCP_INSTRUCTIONS,
+    host=_init_config.server.host,
+    port=_init_config.server.port,
 )
 
 # Global services
